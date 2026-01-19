@@ -1,0 +1,62 @@
+<%- include("../partials/head", { pageTitle: "Edit Task" }) %>
+<%- include("../partials/navbar", { currentPage: "", isLoggedIn, user }) %>
+
+<main class="container page">
+  <div class="form-wrap">
+    <header class="form-head">
+      <h1>Edit task</h1>
+      <p class="subtext">Update your task and stay consistent 💪</p>
+    </header>
+
+    <form class="form" action="/todos/<%= todo._id %>/edit" method="POST">
+      
+      <label class="label">Title</label>
+      <input
+        class="input"
+        type="text"
+        name="title"
+        value="<%= todo.title || '' %>"
+        required
+      />
+
+      <label class="label">Description</label>
+      <textarea class="textarea" name="description"><%= todo.description || "" %></textarea>
+
+      <div class="row">
+        <div>
+          <label class="label">Priority</label>
+          <select class="select" name="priority">
+            <option value="" <%= !todo.priority ? "selected" : "" %>>Choose</option>
+            <option value="low" <%= todo.priority === "low" ? "selected" : "" %>>Low</option>
+            <option value="medium" <%= todo.priority === "medium" ? "selected" : "" %>>Medium</option>
+            <option value="high" <%= todo.priority === "high" ? "selected" : "" %>>High</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="label">Due Date</label>
+          <input
+            class="input"
+            type="date"
+            name="dueDate"
+            value="<%= todo.dueDate || '' %>"
+          />
+        </div>
+      </div>
+
+      <div class="row row-compact">
+        <label class="check">
+          <input type="checkbox" name="isCompleted" <%= todo.isCompleted ? "checked" : "" %> />
+          Mark as completed
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <a href="/todos" class="btn btn-ghost">Cancel</a>
+        <button class="btn" type="submit">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include("../partials/footer") %>

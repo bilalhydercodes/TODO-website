@@ -1,0 +1,56 @@
+<%- include("../partials/head", { pageTitle: "Create Task" }) %>
+<%- include("../partials/navbar", { currentPage: "new", isLoggedIn, user }) %>
+
+<main class="container page">
+  <div class="form-wrap">
+    <header class="form-head">
+      <h1>Create a new task</h1>
+      <p class="subtext">Make your productivity go brrrr 🚀</p>
+    </header>
+
+    <form class="form" action="/todos/new" method="POST">
+      <label class="label">Title</label>
+      <input
+        class="input"
+        type="text"
+        name="title"
+        placeholder="Eg: Finish DSA sheet"
+        required
+      />
+
+      <label class="label">Description (optional)</label>
+      <textarea
+        class="textarea"
+        name="description"
+        placeholder="Write small notes..."
+      ></textarea>
+
+      <div class="row">
+        <div>
+          <label class="label">Priority</label>
+          <select class="select" name="priority" required>
+            <option value="">Choose</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="label">Due Date</label>
+         <input class="input" type="date" name="dueDate"
+  value="<%= new Date().toISOString().slice(0,10) %>"
+  min="<%= new Date().toISOString().slice(0,10) %>" />
+
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="/todos" class="btn btn-ghost">Cancel</a>
+        <button class="btn" type="submit">Create Task</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include("../partials/footer") %>

@@ -1,0 +1,30 @@
+<%- include("../partials/head", { pageTitle: "Login" }) %>
+<%- include("../partials/navbar", { currentPage: "", isLoggedIn, user }) %>
+
+<main class="container page auth">
+  <div class="auth-card">
+    <h1>Login</h1>
+    <p class="subtext">Welcome back bro 😄</p>
+
+    
+
+    <form class="form" action="" method="POST">
+       <%- include('../partials/errors') %>
+      <label class="label">Email</label>
+      <input class="input" type="email" name="email" required />
+
+      <label class="label">Password</label>
+      <input class="input" type="password" name="password" required />
+
+      <button class="btn full" type="submit">Login</button>
+    </form>
+    <p style="text-align: center; margin-top: 10px;">
+      <a href="/auth/forgot-password">Forgot Password?</a>
+    </p>
+
+    <p class="helper-text">
+      New here? <a href="./signup">Create account</a>
+    </p>
+  </div>
+</main>
+<%- include("../partials/footer") %>

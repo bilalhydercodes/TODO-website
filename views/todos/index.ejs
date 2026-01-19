@@ -1,0 +1,123 @@
+<%- include("../partials/head", { pageTitle: "Your Tasks" }) %>
+<%- include("../partials/navbar", { currentPage: "todos", isLoggedIn, user }) %>
+
+<main class="container page">
+  <header class="page-head">
+    <div>
+      <h1>Your Tasks</h1>
+      <p class="subtext">Create, track and complete your daily tasks.</p>
+    </div>
+    <a href="/todos/new" class="btn">+ New Task</a>
+  </header>
+
+  <!-- Search (optional: Bilal can implement backend filtering) -->
+  <form action="/" method="GET" class="searchbar">
+    <input type="text" name="q" placeholder="Search tasks..." value="<%= q || '' %>">
+    <button class="btn btn-ghost" type="submit">Search</button>
+  </form>
+
+
+  <form class="filters" action="/todos" method="GET">
+  <input type="hidden" name="q" value="<%= q || '' %>">
+
+  <select class="select" name="status">
+    <option value="">All Status</option>
+    <option value="pending" <%= status==='pending' ? 'selected' : '' %>>Pending</option>
+    <option value="completed" <%= status==='completed' ? 'selected' : '' %>>Completed</option>
+  </select>
+
+  <select class="select" name="priority">
+    <option value="">All Priority</option>
+    <option value="low" <%= priority==='low' ? 'selected' : '' %>>Low</option>
+    <option value="medium" <%= priority==='medium' ? 'selected' : '' %>>Medium</option>
+    <option value="high" <%= priority==='high' ? 'selected' : '' %>>High</option>
+  </select>
+
+  <select class="select" name="sort">
+    <option value="new" <%= sort==='new' ? 'selected' : '' %>>Newest</option>
+    <option value="old" <%= sort==='old' ? 'selected' : '' %>>Oldest</option>
+    <option value="due" <%= sort==='due' ? 'selected' : '' %>>Due Date</option>
+  </select>
+
+  <button class="btn btn-ghost" type="submit">Apply</button>
+</form>
+
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stat-card">
+      <p class="stat-label">Total</p>
+      <h3 class="stat-num"><%= stats?.total ?? (todos?.length || 0) %></h3>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Completed</p>
+      <h3 class="stat-num"><%= stats?.completed ?? 0 %></h3>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Pending</p>
+      <h3 class="stat-num"><%= stats?.pending ?? 0 %></h3>
+    </div>
+  </section>
+
+  <!-- Todo list -->
+  <% if (!todos || todos.length === 0) { %>
+    <div class="empty">
+      <div class="empty-card">
+        <h3>No tasks found 😴</h3>
+        <p>Create your first task to get started.</p>
+        <a href="/todos/new" class="btn">Create Task</a>
+      </div>
+    </div>
+  <% } else { %>
+    <section class="grid">
+      <% todos.forEach(todo => { %>
+        <article class="todo-card <%= todo.isCompleted ? 'done' : '' %>">
+          <div class="todo-top">
+            <div class="todo-title">
+              <h3><%= todo.title %></h3>
+              <% if (todo.priority) { %>
+                <span class="badge badge-<%= todo.priority %>"><%= todo.priority %></span>
+              <% } %>
+            </div>
+
+            <div class="todo-meta">
+              <% if (todo.dueDate) { %>
+                <span class="chip">📅 <%= todo.dueDate %></span>
+              <% } %>
+              <span class="chip <%= todo.isCompleted ? 'chip-green' : 'chip-gray' %>">
+                <%= todo.isCompleted ? "Completed" : "Pending" %>
+              </span>
+            </div>
+
+            <% if (todo.description) { %>
+              <p class="todo-desc"><%= todo.description %></p>
+            <% } %>
+          </div>
+
+          <div class="todo-actions">
+            <a href="/todos/<%= todo._id %>/detail" class="btn btn-ghost">Details</a>
+            <a href="/todos/<%= todo._id %>/edit" class="btn btn-ghost">Edit</a>
+
+            <!-- Toggle complete (Bilal will handle route) -->
+            <form action="/todos/<%= todo._id %>/toggle" method="POST">
+              <button class="btn <%= todo.isCompleted ? 'btn-ghost' : '' %>" type="submit">
+                <%= todo.isCompleted ? "Mark Pending" : "Mark Done" %>
+
+              </button>
+            </form>
+
+            <!-- Delete -->
+            <form action="/todos/<%= todo._id %>/delete" method="POST" onsubmit="return confirm('Delete this task?');">
+              <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </article>
+      <% }) %>
+    </section>
+  <% } %>
+</main>
+
+
+
+
+<%- include("../partials/footer") %>

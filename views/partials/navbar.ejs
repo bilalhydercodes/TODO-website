@@ -1,0 +1,29 @@
+<nav class="nav">
+  <div class="nav-inner container">
+    <a href="/" class="brand">
+      ✅ <span>ToDo</span><span class="muted">App</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="/todos" class="<%= currentPage === 'todos' ? 'active' : '' %>">Tasks</a>
+      <a href="/todos/new" class="<%= currentPage === 'new' ? 'active' : '' %>">Create</a>
+      <a href="/todos/notes" class="<%= currentPage === 'notes' ? 'active' : '' %>">Notes</a>
+      <a href="/blog" class="<%= currentPage === 'blog' ? 'active' : '' %>">Blog</a>
+    </div>
+
+    <div class="nav-actions">
+      <% if (isLoggedIn) { %>
+        <div class="user-pill">
+          <span class="dot"></span>
+          <span><%= user?.name || "User" %></span>
+        </div>
+        <form action="/auth/logout" method="POST">
+          <button class="btn btn-ghost" type="submit">Logout</button>
+        </form>
+      <% } else { %>
+        <a class="btn btn-ghost" href="/auth/login">Login</a>
+        <a class="btn" href="/auth/signup">Signup</a>
+      <% } %>
+    </div>
+  </div>
+</nav>

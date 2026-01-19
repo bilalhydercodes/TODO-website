@@ -1,0 +1,111 @@
+<%- include("../partials/head", { pageTitle: "My Notes" }) %>
+<%- include("../partials/navbar", { currentPage: "", isLoggedIn, user }) %>
+
+<main class="container page">
+
+  <div class="page-head">
+    <div>
+      <h1>My Notes</h1>
+      <p class="subtext">Capture your ideas and reminders.</p>
+    </div>
+  </div>
+
+  <!-- Add Note Form -->
+  <div class="form-wrap">
+    <form class="form" action="/todos/notes" method="POST">
+      <div class="form-head">
+        <h3>Create Note</h3>
+      </div>
+
+      <label class="label">Title</label>
+      <input type="text" name="title" class="input" placeholder="e.g. Project Ideas" required>
+
+      <label class="label">Content</label>
+      <textarea name="content" class="textarea" placeholder="Write your note here..." required></textarea>
+
+      <div class="form-actions">
+        <button type="submit" class="btn">Save Note</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Notes Grid Display -->
+  <div class="notes-grid">
+
+    <!-- Example note cards -->
+    <div class="note-card">
+      <div class="todo-title">
+        <h3>Meeting Notes</h3>
+      </div>
+      <div class="todo-meta">
+        <span class="chip">Today</span>
+      </div>
+      <div class="note-content">
+        Discuss the new feature launch timeline and assign tasks to the team.
+      </div>
+      <div class="todo-actions">
+        <button class="btn btn-ghost">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+
+    <div class="note-card">
+      <div class="todo-title">
+        <h3>Grocery List</h3>
+      </div>
+      <div class="todo-meta">
+        <span class="chip">Yesterday</span>
+      </div>
+      <div class="note-content">
+        Milk<br>
+        Eggs<br>
+        Bread<br>
+        Coffee beans
+      </div>
+      <div class="todo-actions">
+        <button class="btn btn-ghost">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="notes-grid">
+
+  <% if (!notes || notes.length === 0) { %>
+    <div class="empty-card" style="grid-column: 1 / -1;">
+      <h3>No notes yet 📝</h3>
+      <p class="subtext">Create your first note above.</p>
+    </div>
+  <% } else { %>
+
+    <% notes.forEach(note => { %>
+      <div class="note-card">
+        <div class="todo-title">
+          <h3><%= note.title %></h3>
+        </div>
+
+        <div class="todo-meta">
+          <span class="chip">
+            <%= new Date(note.createdAt).toLocaleDateString() %>
+          </span>
+        </div>
+
+        <div class="note-content"><%= note.content %></div>
+
+        <div class="todo-actions">
+          <a href="/notes/<%= note._id %>/edit" class="btn btn-ghost">Edit</a>
+
+          <form action="/notes/<%= note._id %>/delete" method="POST">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+
+  <% } %>
+</div>
+
+
+</main>
+
+<%- include("../partials/footer") %>

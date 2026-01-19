@@ -1,0 +1,51 @@
+<%- include("../partials/head", { pageTitle: "Task Details" }) %>
+<%- include("../partials/navbar", { currentPage: "", isLoggedIn, user }) %>
+
+<main class="container page">
+  <div class="details">
+    <div class="details-card">
+      <div class="details-top">
+        <h1><%= todo.title %></h1>
+        <span class="chip <%= todo.isCompleted ? 'chip-green' : 'chip-gray' %>">
+          <%= todo.isCompleted ? "Completed" : "Pending" %>
+        </span>
+      </div>
+
+      <% if (todo.description) { %>
+        <p class="details-desc"><%= todo.description %></p>
+      <% } %>
+
+      <div class="details-grid">
+        <div class="info">
+          <p class="label-mini">Priority</p>
+          <p class="val"><%= todo.priority || "N/A" %></p>
+        </div>
+        <div class="info">
+          <p class="label-mini">Due Date</p>
+          <p class="val"><%= todo.dueDate || "N/A" %></p>
+        </div>
+        <div class="info">
+          <p class="label-mini">Created</p>
+          <p class="val"><%= todo.createdAt || "N/A" %></p>
+        </div>
+      </div>
+
+      <div class="details-actions">
+        <a href="/" class="btn btn-ghost">Back</a>
+        <a href="/todos/<%= todo._id %>/edit" class="btn">Edit</a>
+
+        <form action="/todos/<%= todo._id %>/toggle" method="POST">
+          <button class="btn btn-ghost" type="submit">
+            <%= todo.isCompleted ? "Mark Pending" : "Mark Done" %>
+          </button>
+        </form>
+
+        <form action="/todos/<%= todo._id %>/delete" method="POST" onsubmit="return confirm('Delete this task?');">
+          <button class="btn btn-danger" type="submit">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include("../partials/footer") %>
